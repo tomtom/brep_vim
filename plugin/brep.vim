@@ -5,19 +5,12 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
 " @Last Change: 2011-07-04.
-" @Revision:    9
+" @Revision:    10
 " GetLatestVimScripts: 0 0 :AutoInstall: brep.vim
 " 
 
 if &cp || exists("loaded_brep")
     finish
-endif
-if !exists('g:loaded_tlib') || g:loaded_tlib < 42
-    runtime plugin/02tlib.vim
-    if !exists('g:loaded_tlib') || g:loaded_tlib < 42
-        echoerr 'tlib >= 0.42 is required'
-        finish
-    endif
 endif
 let loaded_brep = 1
 
