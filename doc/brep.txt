@@ -1,0 +1,54 @@
+*brep.txt*          Scan certain buffers for a regexp
+                    Author: Tom Link, micathom at gmail com
+
+Scan certain buffers for a regexp and save the result as |quickfix| list.
+
+
+-----------------------------------------------------------------------
+Install~
+
+In order to install the vba, open the vba file in VIM and type: >
+
+    :so %
+
+See :help vimball for details.
+
+This script requires tlib (vimscript #1863) to be installed.
+
+Optional enhancement: trag (vimscript #2033)
+
+Also available via git: http://github.com/tomtom/brep_vim/
+
+
+========================================================================
+Contents~
+
+        :Brep ............... |:Brep|
+        g:brep#view_qfl ..... |g:brep#view_qfl|
+        brep#Grep ........... |brep#Grep()|
+
+
+========================================================================
+plugin/brep.vim~
+
+                                                    *:Brep*
+Brep[!] REGEXP
+    Scan buffers for REGEXP by means of |brep#Grep()|.
+    
+    With the optional bang '!', scan unlisted buffers too.
+
+
+========================================================================
+autoload/brep.vim~
+
+                                                    *g:brep#view_qfl*
+g:brep#view_qfl                (default: exists('g:loaded_trag') ? 'Tragcw' : 'cwindow')
+    Command used to display the |quickfixlist|.
+
+                                                    *brep#Grep()*
+brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
+    Scan buffers vor a |regexp|.
+
+
+
+vim:tw=78:fo=tcq2:isk=!-~,^*,^|,^":ts=8:ft=help:norl:
