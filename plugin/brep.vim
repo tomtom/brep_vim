@@ -4,9 +4,9 @@
 " @GIT:         http://github.com/tomtom/
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
-" @Last Change: 2011-07-04.
-" @Revision:    10
-" GetLatestVimScripts: 0 0 :AutoInstall: brep.vim
+" @Last Change: 2011-07-05.
+" @Revision:    11
+" GetLatestVimScripts: 3653 0 :AutoInstall: brep.vim
 " 
 
 if &cp || exists("loaded_brep")
