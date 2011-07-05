@@ -13,8 +13,6 @@ In order to install the vba, open the vba file in VIM and type: >
 
 See :help vimball for details.
 
-This script requires tlib (vimscript #1863) to be installed.
-
 Optional enhancement: trag (vimscript #2033)
 
 Also available via git: http://github.com/tomtom/brep_vim/
@@ -23,9 +21,12 @@ Also available via git: http://github.com/tomtom/brep_vim/
 ========================================================================
 Contents~
 
-        :Brep ............... |:Brep|
-        g:brep#view_qfl ..... |g:brep#view_qfl|
-        brep#Grep ........... |brep#Grep()|
+        :Brep ....................... |:Brep|
+        g:brep#view_qfl ............. |g:brep#view_qfl|
+        g:brep#ignore_buftypes ...... |g:brep#ignore_buftypes|
+        g:brep#ignore_bufnames_rx ... |g:brep#ignore_bufnames_rx|
+        g:brep#ignore_filetype ...... |g:brep#ignore_filetype|
+        brep#Grep ................... |brep#Grep()|
 
 
 ========================================================================
@@ -44,6 +45,18 @@ autoload/brep.vim~
                                                     *g:brep#view_qfl*
 g:brep#view_qfl                (default: exists('g:loaded_trag') ? 'Tragcw' : 'cwindow')
     Command used to display the |quickfixlist|.
+
+                                                    *g:brep#ignore_buftypes*
+g:brep#ignore_buftypes         (default: ['quickfix'])
+    Ignore buffer types (see 'buftype').
+
+                                                    *g:brep#ignore_bufnames_rx*
+g:brep#ignore_bufnames_rx      (default: '')
+    Ignore buffers matchings this |regexp|.
+
+                                                    *g:brep#ignore_filetype*
+g:brep#ignore_filetype         (default: [])
+    Ignore these filetypes.
 
                                                     *brep#Grep()*
 brep#Grep(regexp, ?buffers=[], ?show_hidden=0)

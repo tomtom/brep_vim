@@ -1,20 +1,20 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
-" @Last Change: 2011-07-04.
-" @Revision:    48
+" @Last Change: 2011-07-05.
+" @Revision:    52
 
 
 " Command used to display the |quickfixlist|.
 TLet g:brep#view_qfl = exists('g:loaded_trag') ? 'Tragcw' : 'cwindow'
 
-" Ignore buffer types (see 'buftype')
+" Ignore buffer types (see 'buftype').
 TLet g:brep#ignore_buftypes = ['quickfix']
 
-" Ignore buffers matchings this |regexp|
+" Ignore buffers matchings this |regexp|.
 TLet g:brep#ignore_bufnames_rx = ''
 
-" Ignore these filetypes
+" Ignore these filetypes.
 TLet g:brep#ignore_filetype = []
 
 " :display: brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
