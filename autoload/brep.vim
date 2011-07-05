@@ -30,7 +30,7 @@ function! brep#Grep(regexp, ...) "{{{3
         endif
         redir END
         let buffers = split(bufferss, '\n')
-        let buffers = map(buffers, '0 + matchstr(v:val, ''^\s*\zs\d\+'')')
+        let buffers = map(buffers, 'str2nr(matchstr(v:val, ''^\s*\zs\d\+''))')
     endif
     let qfl = []
     for bufnr in buffers
