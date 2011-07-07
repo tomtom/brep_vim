@@ -4,3 +4,5 @@ version: "0.02"
   - Automatically use :bufdo if the pattern contains \n
   MD5 checksum: 37ca19d799be1d68bfd238c8155caf9a
 
+version: "0.01"
+  - Initial
