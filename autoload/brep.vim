@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
 " @Last Change: 2011-07-07.
-" @Revision:    71
+" @Revision:    73
 
 
 if !exists('g:brep#view_qfl')
@@ -30,6 +30,7 @@ if !exists('g:brep#use_bufdo')
     " you want to search for multi-line patterns, you have to use |:bufdo| 
     " instead. You won't be able to scan unlisted buffers this way. 
     " Using bufdo is slightly slower.
+    " If the pattern contains '\n', |:Brep| always uses :bufdo anyway.
     let g:brep#use_bufdo = 0   "{{{2
 endif
 
@@ -51,7 +52,7 @@ function! brep#Grep(regexp, ...) "{{{3
         let buffers = map(buffers, 'str2nr(matchstr(v:val, ''^\s*\zs\d\+''))')
     endif
     let qfl = []
-    if g:brep#use_bufdo
+    if g:brep#use_bufdo || match(a:regexp, '\(^\|[^\\]\|\(^\|[^\\]\)\(\\\\\)\+\)\\n') != -1
         let cbufnr = bufnr('%')
         let lazyredraw = &lazyredraw
         let eventignore = &eventignore
