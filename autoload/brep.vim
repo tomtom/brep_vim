@@ -1,26 +1,37 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
-" @Last Change: 2011-07-05.
-" @Revision:    52
+" @Last Change: 2011-07-07.
+" @Revision:    71
 
 
-" Command used to display the |quickfixlist|.
-TLet g:brep#view_qfl = exists('g:loaded_trag') ? 'Tragcw' : 'cwindow'
+if !exists('g:brep#view_qfl')
+    " Command used to display the |quickfixlist|.
+    let g:brep#view_qfl = exists('g:loaded_trag') ? 'Tragcw' : 'cwindow'   "{{{2
+endif
 
-" Ignore buffer types (see 'buftype').
-TLet g:brep#ignore_buftypes = ['quickfix']
+if !exists('g:brep#ignore_buftypes')
+    " Ignore buffer types (see 'buftype').
+    let g:brep#ignore_buftypes = ['quickfix']   "{{{2
+endif
 
-" Ignore buffers matchings this |regexp|.
-TLet g:brep#ignore_bufnames_rx = ''
+if !exists('g:brep#ignore_bufnames_rx')
+    " Ignore buffers matchings this |regexp|.
+    let g:brep#ignore_bufnames_rx = ''   "{{{2
+endif
 
-" Ignore these filetypes.
-TLet g:brep#ignore_filetype = []
+if !exists('g:brep#ignore_filetype')
+    " Ignore these filetypes.
+    let g:brep#ignore_filetype = []   "{{{2
+endif
+
+
 
 " :display: brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
 " Scan buffers vor a |regexp|.
 function! brep#Grep(regexp, ...) "{{{3
-    TVarArg ['buffers', []], ['show_hidden', 0]
+    let buffers = a:0 >= 1 ? a:1 : []
+    let show_hidden = a:0 >= 2 ? a:2 : 0
     if empty(buffers)
         redir => bufferss
         if show_hidden
