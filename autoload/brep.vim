@@ -25,6 +25,13 @@ if !exists('g:brep#ignore_filetype')
     let g:brep#ignore_filetype = []   "{{{2
 endif
 
+if !exists('g:brep#use_bufdo')
+    " By default brep does single line scans on the buffer contents. If 
+    " you want to search for multi-line patterns, you have to use |:bufdo| 
+    " instead. You won't be able to scan unlisted buffers this way. 
+    " Using bufdo is slightly slower.
+    let g:brep#use_bufdo = 0   "{{{2
+endif
 
 
 " :display: brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
@@ -44,27 +51,42 @@ function! brep#Grep(regexp, ...) "{{{3
         let buffers = map(buffers, 'str2nr(matchstr(v:val, ''^\s*\zs\d\+''))')
     endif
     let qfl = []
-    for bufnr in buffers
-        if index(g:brep#ignore_buftypes, getbufvar(bufnr, '&buftype')) == -1
-                    \ && index(g:brep#ignore_filetype, getbufvar(bufnr, '&filetype')) == -1
-                    \ && (empty(g:brep#ignore_bufnames_rx) || bufname(bufnr) !~ g:brep#ignore_bufnames_rx)
-            let buffer_text = getbufline(bufnr, 1, '$')
-            let s:lnum = 0
-            let buffer_text = map(buffer_text, 's:LineDef(bufnr, v:val)')
-            unlet s:lnum
-            if &smartcase && a:regexp =~ '\u'
-                let ic = &ignorecase
-                let &l:ic = 0
+    if g:brep#use_bufdo
+        let cbufnr = bufnr('%')
+        let lazyredraw = &lazyredraw
+        let eventignore = &eventignore
+        set lazyredraw
+        set eventignore=all
+        try
+            exec 'silent keepalt bufdo! g/'. escape(a:regexp, '/') .'/call add(qfl, {"bufnr": bufnr("%"), "lnum": line("."), "text": getline("."), "type": "G"})'
+        finally
+            exec 'keepalt buffer' cbufnr
+            let &lazyredraw = lazyredraw
+            let &eventignore = eventignore
+        endtry
+    else
+        for bufnr in buffers
+            if index(g:brep#ignore_buftypes, getbufvar(bufnr, '&buftype')) == -1
+                        \ && index(g:brep#ignore_filetype, getbufvar(bufnr, '&filetype')) == -1
+                        \ && (empty(g:brep#ignore_bufnames_rx) || bufname(bufnr) !~ g:brep#ignore_bufnames_rx)
+                let buffer_text = getbufline(bufnr, 1, '$')
+                let s:lnum = 0
+                let buffer_text = map(buffer_text, 's:LineDef(bufnr, v:val)')
+                unlet s:lnum
+                if &smartcase && a:regexp =~ '\u'
+                    let ic = &ignorecase
+                    let &l:ic = 0
+                endif
+                let buffer_text = filter(buffer_text, 'v:val.text =~ a:regexp')
+                if &smartcase && a:regexp =~ '\u'
+                    let &l:ic = ic
+                endif
+                if !empty(buffer_text)
+                    let qfl = extend(qfl, buffer_text)
+                endif
             endif
-            let buffer_text = filter(buffer_text, 'v:val.text =~ a:regexp')
-            if &smartcase && a:regexp =~ '\u'
-                let &l:ic = ic
-            endif
-            if !empty(buffer_text)
-                let qfl = extend(qfl, buffer_text)
-            endif
-        endif
-    endfor
+        endfor
+    endif
     if !empty(qfl)
         call setqflist(qfl)
         if !empty(g:brep#view_qfl)
