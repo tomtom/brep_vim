@@ -26,6 +26,7 @@ Contents~
         g:brep#ignore_buftypes ...... |g:brep#ignore_buftypes|
         g:brep#ignore_bufnames_rx ... |g:brep#ignore_bufnames_rx|
         g:brep#ignore_filetype ...... |g:brep#ignore_filetype|
+        g:brep#use_bufdo ............ |g:brep#use_bufdo|
         brep#Grep ................... |brep#Grep()|
 
 
@@ -57,6 +58,14 @@ g:brep#ignore_bufnames_rx      (default: '')
                                                     *g:brep#ignore_filetype*
 g:brep#ignore_filetype         (default: [])
     Ignore these filetypes.
+
+                                                    *g:brep#use_bufdo*
+g:brep#use_bufdo               (default: 0)
+    By default brep does single line scans on the buffer contents. If 
+    you want to search for multi-line patterns, you have to use |:bufdo| 
+    instead. You won't be able to scan unlisted buffers this way. 
+    Using bufdo is slightly slower.
+    If the pattern contains '\n', |:Brep| always uses :bufdo anyway.
 
                                                     *brep#Grep()*
 brep#Grep(regexp, ?buffers=[], ?show_hidden=0)

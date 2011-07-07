@@ -4,15 +4,15 @@
 " @GIT:         http://github.com/tomtom/
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
-" @Last Change: 2011-07-05.
-" @Revision:    11
+" @Last Change: 2011-07-07.
+" @Revision:    12
 " GetLatestVimScripts: 3653 0 :AutoInstall: brep.vim
 " 
 
 if &cp || exists("loaded_brep")
     finish
 endif
-let loaded_brep = 1
+let loaded_brep = 2
 
 let s:save_cpo = &cpo
 set cpo&vim
