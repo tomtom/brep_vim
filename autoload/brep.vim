@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
 " @Last Change: 2011-07-08.
-" @Revision:    74
+" @Revision:    80
 
 
 if !exists('g:brep#view_qfl')
@@ -59,7 +59,7 @@ function! brep#Grep(regexp, ...) "{{{3
         set lazyredraw
         set eventignore=all
         try
-            exec 'silent keepalt bufdo! g/'. escape(a:regexp, '/') .'/call add(qfl, {"bufnr": bufnr("%"), "lnum": line("."), "text": getline("."), "type": "G"})'
+            keepalt bufdo! call s:Bufdo(a:regexp, qfl)
         finally
             exec 'keepalt buffer' cbufnr
             let &lazyredraw = lazyredraw
@@ -67,9 +67,7 @@ function! brep#Grep(regexp, ...) "{{{3
         endtry
     else
         for bufnr in buffers
-            if index(g:brep#ignore_buftypes, getbufvar(bufnr, '&buftype')) == -1
-                        \ && index(g:brep#ignore_filetype, getbufvar(bufnr, '&filetype')) == -1
-                        \ && (empty(g:brep#ignore_bufnames_rx) || bufname(bufnr) !~ g:brep#ignore_bufnames_rx)
+            if s:DontIgnoreBuffer(bufnr)
                 let buffer_text = getbufline(bufnr, 1, '$')
                 let s:lnum = 0
                 let buffer_text = map(buffer_text, 's:LineDef(bufnr, v:val)')
@@ -94,6 +92,20 @@ function! brep#Grep(regexp, ...) "{{{3
             exec g:brep#view_qfl
         endif
     endif
+endf
+
+
+function! s:Bufdo(regexp, qfl) "{{{3
+    if s:DontIgnoreBuffer(bufnr('%'))
+        exec 'silent g/'. escape(a:regexp, '/') .'/call add(a:qfl, {"bufnr": bufnr("%"), "lnum": line("."), "text": getline("."), "type": "G"})'
+    endif
+endf
+
+
+function! s:DontIgnoreBuffer(bufnr) "{{{3
+    return index(g:brep#ignore_buftypes, getbufvar(a:bufnr, '&buftype')) == -1
+                \ && index(g:brep#ignore_filetype, getbufvar(a:bufnr, '&filetype')) == -1
+                \ && (empty(g:brep#ignore_bufnames_rx) || bufname(a:bufnr) !~ g:brep#ignore_bufnames_rx) 
 endf
 
 
