@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
 " @Last Change: 2011-07-08.
-" @Revision:    84
+" @Revision:    99
 
 
 if !exists('g:brep#view_qfl')
@@ -60,14 +60,22 @@ function! brep#Grep(regexp, ...) "{{{3
         let buffers = map(buffers, 'str2nr(matchstr(v:val, ''^\s*\zs\d\+''))')
     endif
     let qfl = []
-    if g:brep#use_bufdo || match(a:regexp, '\(^\|[^\\]\|\(^\|[^\\]\)\(\\\\\)\+\)\\n') != -1
+    let regexp = a:regexp
+    if &smartcase
+        if regexp =~ '\u' && regexp !~# '\(^\|[^\\]\|\(^\|[^\\]\)\(\\\\\)\+\)\\c'
+            let regexp = '\C'. regexp
+        else
+            let regexp = '\c'. regexp
+        endif
+    endif
+    if g:brep#use_bufdo || match(regexp, '\(^\|[^\\]\|\(^\|[^\\]\)\(\\\\\)\+\)\\n') != -1
         let cbufnr = bufnr('%')
         let lazyredraw = &lazyredraw
         let eventignore = &eventignore
         set lazyredraw
         set eventignore=all
         try
-            keepalt bufdo! call s:Bufdo(a:regexp, qfl)
+            keepalt bufdo! call s:Bufdo(regexp, qfl)
         finally
             exec 'keepalt buffer' cbufnr
             let &lazyredraw = lazyredraw
@@ -80,11 +88,6 @@ function! brep#Grep(regexp, ...) "{{{3
                 let s:lnum = 0
                 let buffer_text = map(buffer_text, 's:LineDef(bufnr, v:val)')
                 unlet s:lnum
-                if &smartcase && a:regexp =~ '\u' && a:regexp !~# '\(^\|[^\\]\|\(^\|[^\\]\)\(\\\\\)\+\)\\c'
-                    let regexp = '\C'. a:regexp
-                else
-                    let regexp = a:regexp
-                endif
                 let buffer_text = filter(buffer_text, 'v:val.text =~ regexp')
                 if !empty(buffer_text)
                     let qfl = extend(qfl, buffer_text)
