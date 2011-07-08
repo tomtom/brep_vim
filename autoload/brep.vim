@@ -34,6 +34,14 @@ if !exists('g:brep#use_bufdo')
     let g:brep#use_bufdo = 0   "{{{2
 endif
 
+if !exists('g:brep#match_cmd')
+    " Use this |:match| command to highlight matches.
+    " If "/", set the |@/| register instead.
+    " If empty, don't highlight matches.
+    " Remove the highlighting with ":match".
+    let g:brep#match_cmd = 'match Search'   "{{{2
+endif
+
 
 " :display: brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
 " Scan buffers for a |regexp|.
@@ -86,6 +94,11 @@ function! brep#Grep(regexp, ...) "{{{3
     endif
     if !empty(qfl)
         call setqflist(qfl)
+        if g:brep#match_cmd == '/'
+            let @/ = regexp
+        elseif !empty(g:brep#match_cmd)
+            exec g:brep#match_cmd '/'. escape(regexp, '/') .'/'
+        endif
         if !empty(g:brep#view_qfl)
             exec g:brep#view_qfl
         endif
