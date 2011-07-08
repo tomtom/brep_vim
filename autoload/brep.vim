@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
 " @Last Change: 2011-07-08.
-" @Revision:    80
+" @Revision:    84
 
 
 if !exists('g:brep#view_qfl')
@@ -72,14 +72,12 @@ function! brep#Grep(regexp, ...) "{{{3
                 let s:lnum = 0
                 let buffer_text = map(buffer_text, 's:LineDef(bufnr, v:val)')
                 unlet s:lnum
-                if &smartcase && a:regexp =~ '\u'
-                    let ic = &ignorecase
-                    let &l:ic = 0
+                if &smartcase && a:regexp =~ '\u' && a:regexp !~# '\(^\|[^\\]\|\(^\|[^\\]\)\(\\\\\)\+\)\\c'
+                    let regexp = '\C'. a:regexp
+                else
+                    let regexp = a:regexp
                 endif
-                let buffer_text = filter(buffer_text, 'v:val.text =~ a:regexp')
-                if &smartcase && a:regexp =~ '\u'
-                    let &l:ic = ic
-                endif
+                let buffer_text = filter(buffer_text, 'v:val.text =~ regexp')
                 if !empty(buffer_text)
                     let qfl = extend(qfl, buffer_text)
                 endif
