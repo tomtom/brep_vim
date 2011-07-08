@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2011-07-04.
-" @Last Change: 2011-07-07.
-" @Revision:    73
+" @Last Change: 2011-07-08.
+" @Revision:    74
 
 
 if !exists('g:brep#view_qfl')
@@ -36,7 +36,7 @@ endif
 
 
 " :display: brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
-" Scan buffers vor a |regexp|.
+" Scan buffers for a |regexp|.
 function! brep#Grep(regexp, ...) "{{{3
     let buffers = a:0 >= 1 ? a:1 : []
     let show_hidden = a:0 >= 2 ? a:2 : 0

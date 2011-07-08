@@ -69,7 +69,7 @@ g:brep#use_bufdo               (default: 0)
 
                                                     *brep#Grep()*
 brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
-    Scan buffers vor a |regexp|.
+    Scan buffers for a |regexp|.
 
 
 
