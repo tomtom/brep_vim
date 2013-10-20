@@ -27,6 +27,7 @@ Contents~
         g:brep#ignore_bufnames_rx ... |g:brep#ignore_bufnames_rx|
         g:brep#ignore_filetype ...... |g:brep#ignore_filetype|
         g:brep#use_bufdo ............ |g:brep#use_bufdo|
+        g:brep#match_cmd ............ |g:brep#match_cmd|
         brep#Grep ................... |brep#Grep()|
 
 
@@ -36,7 +37,7 @@ plugin/brep.vim~
                                                     *:Brep*
 Brep[!] REGEXP
     Scan buffers for REGEXP by means of |brep#Grep()|.
-    
+
     With the optional bang '!', scan unlisted buffers too.
 
 
@@ -66,6 +67,13 @@ g:brep#use_bufdo               (default: 0)
     instead. You won't be able to scan unlisted buffers this way. 
     Using bufdo is slightly slower.
     If the pattern contains '\n', |:Brep| always uses :bufdo anyway.
+
+                                                    *g:brep#match_cmd*
+g:brep#match_cmd               (default: 'match Search')
+    Use this |:match| command to highlight matches.
+    If "/", set the |@/| register instead.
+    If empty, don't highlight matches.
+    Remove the highlighting with ":match".
 
                                                     *brep#Grep()*
 brep#Grep(regexp, ?buffers=[], ?show_hidden=0)
